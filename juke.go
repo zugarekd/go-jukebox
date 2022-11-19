@@ -49,7 +49,6 @@ func main() {
 		log.Fatal(err)
 	}
 	lcdDisplay.WriteString("Dan Z's Juke", 1, 0)
-	lcdDisplay.WriteString("---", 2, 0)
 
 	http.HandleFunc("/event", event)
 	http.HandleFunc("/current", current)
@@ -146,7 +145,7 @@ func getSongDisplay() string {
 
 		lcdDisplay.WriteString("Dan Z's Juke", 1, 0)
 
-		lcdDisplay.WriteString(title[1:8], 2, 0)
+		lcdDisplay.WriteString(title[0:8], 2, 0)
 	}
 	return songDisplay
 }
