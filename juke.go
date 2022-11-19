@@ -6,6 +6,8 @@ import (
 	"github.com/hajimehoshi/oto"
 	"github.com/talkkonnect/max7219"
 	"github.com/tosone/minimp3"
+	lcd "github.com/wjessop/lcm1602_lcd"
+	"golang.org/x/exp/io/i2c"
 	"io"
 	"io/ioutil"
 	"log"
@@ -25,6 +27,8 @@ var playing string
 
 var mtx *max7219.Matrix
 
+var lcdDisplay *lcd.LCM1602LCD
+
 func main() {
 	mtx = max7219.NewMatrix(1)
 	err := mtx.Open(0, 0, 7)
@@ -32,6 +36,18 @@ func main() {
 		log.Fatal(err)
 	}
 	defer mtx.Close()
+
+	lcdDevice, err := i2c.Open(&i2c.Devfs{Dev: "/dev/i2c-1"}, 0x27)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer lcdDevice.Close()
+	lcdDisplay, err = lcd.NewLCM1602LCD(lcdDevice)
+	if err != nil {
+		log.Fatal(err)
+	}
+	lcdDisplay.WriteString("Dan Z' Juke", 1, 0)
+	lcdDisplay.WriteString("---", 2, 0)
 
 	http.HandleFunc("/event", event)
 	http.HandleFunc("/current", current)
@@ -119,6 +135,7 @@ func getSongDisplay() string {
 		songDisplay = playing
 	}
 	mtx.Device.SevenSegmentDisplay(songDisplay)
+	lcdDisplay.WriteString("---", 2, 0)
 	return songDisplay
 }
 
