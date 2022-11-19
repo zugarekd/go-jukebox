@@ -134,8 +134,14 @@ func getSongDisplay() string {
 	if len(selection) == 0 || len(selection) >= 3 {
 		songDisplay = playing
 	}
-	mtx.Device.SevenSegmentDisplay(songDisplay)
-	lcdDisplay.WriteString(songDisplay, 2, 0)
+	if songDisplay == "" {
+		mtx.Device.ClearAll(true)
+		lcdDisplay.Clear()
+		lcdDisplay.WriteString("Dan Z' Juke", 1, 0)
+	} else {
+		mtx.Device.SevenSegmentDisplay(songDisplay)
+		lcdDisplay.WriteString(songDisplay, 2, 0)
+	}
 	return songDisplay
 }
 
