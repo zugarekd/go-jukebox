@@ -185,7 +185,8 @@ func playSong(slot string) {
 func getSongFile(slot string) string {
 	files, err := ioutil.ReadDir("/home/zugarekd/go/src/github.com/zugarekd/go-jukebox/songs/" + slot)
 	if err != nil {
-		log.Fatal(err)
+		return ""
+		//log.Fatal(err)
 	}
 
 	for _, file := range files {
