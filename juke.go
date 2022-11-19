@@ -178,8 +178,8 @@ func playSong(slot string) {
 		// start playing
 		fmt.Println("Starting!")
 		io.Copy(player, dec)
-		playing = ""
 	}
+	playing = ""
 }
 
 func getSongFile(slot string) string {
