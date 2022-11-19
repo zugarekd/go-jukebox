@@ -131,7 +131,7 @@ func current(w http.ResponseWriter, req *http.Request) {
 
 func getSongDisplay() string {
 	songDisplay := selection
-	if len(selection) == 0 {
+	if len(selection) == 0 || len(selection) >= 3 {
 		songDisplay = playing
 	}
 	mtx.Device.SevenSegmentDisplay(songDisplay)
