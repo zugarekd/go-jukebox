@@ -6,8 +6,6 @@ import (
 	"github.com/hajimehoshi/oto"
 	"github.com/talkkonnect/max7219"
 	"github.com/tosone/minimp3"
-	lcd "github.com/wjessop/lcm1602_lcd"
-	"golang.org/x/exp/io/i2c"
 	"io"
 	"io/ioutil"
 	"log"
@@ -25,11 +23,7 @@ var songQueue = make([]string, 0)
 
 var playing string
 
-var title string
-
 var mtx *max7219.Matrix
-
-var lcdDisplay *lcd.LCM1602LCD
 
 func main() {
 	mtx = max7219.NewMatrix(1)
@@ -38,17 +32,6 @@ func main() {
 		log.Fatal(err)
 	}
 	defer mtx.Close()
-
-	lcdDevice, err := i2c.Open(&i2c.Devfs{Dev: "/dev/i2c-1"}, 0x27)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer lcdDevice.Close()
-	lcdDisplay, err = lcd.NewLCM1602LCD(lcdDevice)
-	if err != nil {
-		log.Fatal(err)
-	}
-	lcdDisplay.WriteString("Dan Z's Juke", 1, 0)
 
 	http.HandleFunc("/event", event)
 	http.HandleFunc("/current", current)
@@ -137,18 +120,8 @@ func getSongDisplay() string {
 	}
 	if songDisplay == "" {
 		mtx.Device.ClearAll(true)
-		//lcdDisplay.Clear()
-		lcdDisplay.WriteString("Dan Z's Juke", 1, 0)
 	} else {
 		mtx.Device.SevenSegmentDisplay(songDisplay)
-		//lcdDisplay.Clear()
-
-		lcdDisplay.WriteString("Dan Z's Juke", 1, 0)
-		if len(title) > 8 {
-			lcdDisplay.WriteString(title[0:8], 2, 0)
-		} else {
-			lcdDisplay.WriteString(title, 2, 0)
-		}
 	}
 	return songDisplay
 }
@@ -211,7 +184,6 @@ func playSong(slot string) {
 		io.Copy(player, dec)
 	}
 	playing = ""
-	title = ""
 	getSongDisplay()
 }
 
@@ -224,7 +196,6 @@ func getSongFile(slot string) string {
 
 	for _, file := range files {
 		if !file.IsDir() {
-			title = file.Name()
 			return "/home/zugarekd/go/src/github.com/zugarekd/go-jukebox/songs/" + slot + "/" + file.Name()
 		}
 		fmt.Println(file.Name(), file.IsDir())
