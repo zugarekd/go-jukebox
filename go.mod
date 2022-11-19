@@ -1,4 +1,4 @@
-module github.com/zugarekd/go-jukbox
+module github.com/zugarekd/go-jukebox
 
 go 1.17
 
