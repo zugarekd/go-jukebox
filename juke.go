@@ -180,6 +180,7 @@ func playSong(slot string) {
 		io.Copy(player, dec)
 	}
 	playing = ""
+	getSongDisplay()
 }
 
 func getSongFile(slot string) string {
