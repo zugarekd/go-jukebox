@@ -135,7 +135,7 @@ func getSongDisplay() string {
 		songDisplay = playing
 	}
 	mtx.Device.SevenSegmentDisplay(songDisplay)
-	lcdDisplay.WriteString("---", 2, 0)
+	lcdDisplay.WriteString(songDisplay, 2, 0)
 	return songDisplay
 }
 
