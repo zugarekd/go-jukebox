@@ -142,10 +142,9 @@ func getSongDisplay() string {
 		lcdDisplay.WriteString("Dan Z's Juke", 1, 0)
 	} else {
 		mtx.Device.SevenSegmentDisplay(songDisplay)
-		lcdDisplay.WriteString(songDisplay, 2, 0)
 		lcdDisplay.Clear()
 		lcdDisplay.WriteString("Dan Z's Juke", 1, 0)
-		lcdDisplay.WriteString(title, 1, 0)
+		lcdDisplay.WriteString(title, 2, 0)
 	}
 	return songDisplay
 }
