@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).on('keydown', function(e) {
+            $("#down").text(e.which);
+            $.getJSON('http://localhost:8080/event', {event:'down',key:e.which}, function (result, textStatus, jqXHR){});
+        });
+        $(document).on('keyup', function(e) {
+            $("#up").text(e.which)
+            $.getJSON('http://localhost:8080/event', {event:'up',key:e.which}, function (result, textStatus, jqXHR){
+                $.getJSON('http://localhost:8080/current', {}, function (result){
+                    var obj = $.parseJSON(JSON.stringify(result));
+                    $("#current").text(obj.Current)
+                });
+            });
+        });
+        var intervalId = setInterval(function() {
+            $.getJSON('http://localhost:8080/current', {}, function (result){
+                var obj = $.parseJSON(JSON.stringify(result));
+                $("#current").text(obj.Current)
+            });
+        }, 1000);
+    </script>
+</head>
+<body>
+
+<p>Key Press Down: <span id="down"></span></p>
+<p>Key Press Up: <span id="up"></span></p>
+<p>Current Value: <span id="current"></span></p>
+</body>
+</html>
