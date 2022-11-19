@@ -183,14 +183,14 @@ func playSong(slot string) {
 }
 
 func getSongFile(slot string) string {
-	files, err := ioutil.ReadDir("/home/dzugarek/go/src/github.com/zugarekd/go-jukebox/songs/" + slot)
+	files, err := ioutil.ReadDir("/home/zugarekd/go/src/github.com/zugarekd/go-jukebox/songs/" + slot)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for _, file := range files {
 		if !file.IsDir() {
-			return "/home/dzugarek/go/src/github.com/zugarekd/go-jukebox/songs/" + slot + "/" + file.Name()
+			return "/home/zugarekd/go/src/github.com/zugarekd/go-jukebox/songs/" + slot + "/" + file.Name()
 		}
 		fmt.Println(file.Name(), file.IsDir())
 	}
