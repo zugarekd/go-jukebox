@@ -25,6 +25,8 @@ var songQueue = make([]string, 0)
 
 var playing string
 
+var title string
+
 var mtx *max7219.Matrix
 
 var lcdDisplay *lcd.LCM1602LCD
@@ -46,7 +48,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	lcdDisplay.WriteString("Dan Z' Juke", 1, 0)
+	lcdDisplay.WriteString("Dan Z's Juke", 1, 0)
 	lcdDisplay.WriteString("---", 2, 0)
 
 	http.HandleFunc("/event", event)
@@ -137,10 +139,13 @@ func getSongDisplay() string {
 	if songDisplay == "" {
 		mtx.Device.ClearAll(true)
 		lcdDisplay.Clear()
-		lcdDisplay.WriteString("Dan Z' Juke", 1, 0)
+		lcdDisplay.WriteString("Dan Z's Juke", 1, 0)
 	} else {
 		mtx.Device.SevenSegmentDisplay(songDisplay)
 		lcdDisplay.WriteString(songDisplay, 2, 0)
+		lcdDisplay.Clear()
+		lcdDisplay.WriteString("Dan Z's Juke", 1, 0)
+		lcdDisplay.WriteString(title, 1, 0)
 	}
 	return songDisplay
 }
@@ -203,6 +208,7 @@ func playSong(slot string) {
 		io.Copy(player, dec)
 	}
 	playing = ""
+	title = ""
 	getSongDisplay()
 }
 
@@ -215,6 +221,7 @@ func getSongFile(slot string) string {
 
 	for _, file := range files {
 		if !file.IsDir() {
+			title = file.Name()
 			return "/home/zugarekd/go/src/github.com/zugarekd/go-jukebox/songs/" + slot + "/" + file.Name()
 		}
 		fmt.Println(file.Name(), file.IsDir())
