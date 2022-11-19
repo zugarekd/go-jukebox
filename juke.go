@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hajimehoshi/oto"
+	"github.com/talkkonnect/max7219"
 	"github.com/tosone/minimp3"
 	"io"
 	"io/ioutil"
@@ -22,7 +23,16 @@ var songQueue = make([]string, 0)
 
 var playing string
 
+var mtx *max7219.Matrix
+
 func main() {
+	mtx = max7219.NewMatrix(1)
+	err := mtx.Open(0, 0, 7)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer mtx.Close()
+
 	http.HandleFunc("/event", event)
 	http.HandleFunc("/current", current)
 	go http.ListenAndServe(":8080", nil)
@@ -108,6 +118,7 @@ func getSongDisplay() string {
 	if len(selection) == 0 {
 		songDisplay = playing
 	}
+	mtx.Device.SevenSegmentDisplay(songDisplay)
 	return songDisplay
 }
 

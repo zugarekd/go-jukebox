@@ -1,5 +1,9 @@
+github.com/fulr/spidev v0.0.0-20150210165549-524e13e3fac2 h1:Bpecy8A24LtdIGkRUQTzoWf2mR0zkvxzAgTN5iP2iXM=
+github.com/fulr/spidev v0.0.0-20150210165549-524e13e3fac2/go.mod h1:bMLIIHSjkThym5s6mFw/1rkPjtUDvbxSK4xTe/ai2AM=
 github.com/hajimehoshi/oto v1.0.1 h1:8AMnq0Yr2YmzaiqTg/k1Yzd6IygUGk2we9nmjgbgPn4=
 github.com/hajimehoshi/oto v1.0.1/go.mod h1:wovJ8WWMfFKvP587mhHgot/MBr4DnNy9m6EepeVGnos=
+github.com/talkkonnect/max7219 v0.0.0-20220213082435-2caf99768298 h1:LdPBOubROLa9+V2/bIqF2IAuaLjb4fSmLe8JWaUj4pg=
+github.com/talkkonnect/max7219 v0.0.0-20220213082435-2caf99768298/go.mod h1:RYVyiuHwl28P8BIi66n5eFSY6+hvKI6lkov8GXlm08Y=
 github.com/tosone/minimp3 v1.0.1 h1:5ajMIgZKlQqJdX3KJj/wb0o1oNef9S3fuLr9T5YwQqw=
 github.com/tosone/minimp3 v1.0.1/go.mod h1:WFso0UvZL1fPit45V6RQPKxbehLI4XZaJyLs2/TJHoU=
 golang.org/x/exp v0.0.0-20190306152737-a1d7652674e8 h1:idBdZTd9UioThJp8KpM/rTSinK/ChZFBE43/WtIy8zg=
