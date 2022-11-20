@@ -161,14 +161,13 @@ func playSong(slot string) {
 			if err != nil {
 				log.Fatalln(err)
 			}
-			defer file.Close()
 
 			// new a decoder
 			dec, err := minimp3.NewDecoder(file)
 			if err != nil {
 				log.Fatalln(err)
 			}
-			defer dec.Close()
+
 			<-dec.Started()
 
 			// new a context and a player
@@ -176,13 +175,20 @@ func playSong(slot string) {
 			if context, err = oto.NewContext(dec.SampleRate, dec.Channels, 2, 1024); err != nil {
 				log.Fatal(err)
 			}
-			defer context.Close()
+
 			var player = context.NewPlayer()
-			defer player.Close()
 
 			// start playing
 			fmt.Println("Starting!")
 			io.Copy(player, dec)
+			//defer file.Close()
+			file.Close()
+			//defer dec.Close()
+			dec.Close()
+			//defer context.Close()
+			context.Close()
+			//defer player.Close()
+			player.Close()
 		}
 	}
 	playing = ""
