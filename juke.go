@@ -151,54 +151,56 @@ func playQueue() {
 }
 
 func playSong(slot string) {
-	fileName := getSongFile(slot)
-	if fileName != "" {
-		playing = slot
-		// open file
-		file, err := os.Open(fileName)
-		//file, err := os.Open("example.mp3")
-		if err != nil {
-			log.Fatalln(err)
-		}
-		defer file.Close()
+	fileList := getSongFile(slot)
+	for _, fileName := range fileList {
+		if fileName != "" {
+			playing = slot
+			// open file
+			file, err := os.Open(fileName)
+			//file, err := os.Open("example.mp3")
+			if err != nil {
+				log.Fatalln(err)
+			}
+			defer file.Close()
 
-		// new a decoder
-		dec, err := minimp3.NewDecoder(file)
-		if err != nil {
-			log.Fatalln(err)
-		}
-		defer dec.Close()
-		<-dec.Started()
+			// new a decoder
+			dec, err := minimp3.NewDecoder(file)
+			if err != nil {
+				log.Fatalln(err)
+			}
+			defer dec.Close()
+			<-dec.Started()
 
-		// new a context and a player
-		var context *oto.Context
-		if context, err = oto.NewContext(dec.SampleRate, dec.Channels, 2, 1024); err != nil {
-			log.Fatal(err)
-		}
-		defer context.Close()
-		var player = context.NewPlayer()
-		defer player.Close()
+			// new a context and a player
+			var context *oto.Context
+			if context, err = oto.NewContext(dec.SampleRate, dec.Channels, 2, 1024); err != nil {
+				log.Fatal(err)
+			}
+			defer context.Close()
+			var player = context.NewPlayer()
+			defer player.Close()
 
-		// start playing
-		fmt.Println("Starting!")
-		io.Copy(player, dec)
+			// start playing
+			fmt.Println("Starting!")
+			io.Copy(player, dec)
+		}
 	}
 	playing = ""
 	getSongDisplay()
 }
 
-func getSongFile(slot string) string {
+func getSongFile(slot string) []string {
+	var songList []string
 	files, err := ioutil.ReadDir("/home/zugarekd/go/src/github.com/zugarekd/go-jukebox/songs/" + slot)
 	if err != nil {
-		return ""
-		//log.Fatal(err)
+		return songList
 	}
 
 	for _, file := range files {
 		if !file.IsDir() {
-			return "/home/zugarekd/go/src/github.com/zugarekd/go-jukebox/songs/" + slot + "/" + file.Name()
+			songList = append(songList, "/home/zugarekd/go/src/github.com/zugarekd/go-jukebox/songs/"+slot+"/"+file.Name())
 		}
 		fmt.Println(file.Name(), file.IsDir())
 	}
-	return ""
+	return songList
 }
