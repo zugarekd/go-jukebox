@@ -121,7 +121,7 @@ func getSongDisplay() string {
 	if songDisplay == "" {
 		mtx.Device.ClearAll(true)
 	} else {
-		mtx.Device.SevenSegmentDisplay(songDisplay)
+		mtx.Device.SevenSegmentDisplay(songDisplay + "  ")
 	}
 	return songDisplay
 }
